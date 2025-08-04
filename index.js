@@ -2,7 +2,7 @@ import express from 'express';
 import { Octokit } from '@octokit/rest';
 import bodyParser from 'body-parser';
 const GITHUB_TOKENS = {
-  "skritch-squad": "ghp_YourRealGitHubPATHere"
+  "skritch-squad": process.env.GITHUB_TOKEN
 };
 const app = express();
 app.use(bodyParser.json());
