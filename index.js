@@ -1,7 +1,9 @@
 import express from 'express';
 import { Octokit } from '@octokit/rest';
 import bodyParser from 'body-parser';
-
+const GITHUB_TOKENS = {
+  "skritch-squad": "ghp_YourRealGitHubPATHere"
+};
 const app = express();
 app.use(bodyParser.json());
 
@@ -9,7 +11,11 @@ app.post('/push-to-github', async (req, res) => {
   const { repo, branch, path, content, commitMessage, auth } = req.body;
 
   const [owner, repoName] = repo.split('/');
-  const octokit = new Octokit({ auth });
+const token = GITHUB_TOKENS[auth];
+if (!token) {
+  return res.status(401).json({ error: "Unauthorized: invalid token key" });
+}
+const octokit = new Octokit({ auth: token });
 
   try {
     // Step 1: Get the latest commit SHA and tree for the base branch
